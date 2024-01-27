@@ -5,26 +5,26 @@ const { ethers } = require("hardhat");
 describe("ERC20Token", function () {
   let ERC20Token;
   let erc20Token;
+  let totalSupply;
   let owner;
   let addr1;
   let addr2;
 
   beforeEach(async function () {
+    totalSupply = ethers.parseEther('1');
     ERC20Token = await ethers.getContractFactory("ERC20Token");
     [owner, addr1, addr2] = await ethers.getSigners();
-    erc20Token = await ERC20Token.deploy("MyToken", "MTK");
+    erc20Token = await ERC20Token.deploy("MyToken", "MTK", totalSupply);
     await erc20Token.waitForDeployment();
   });
 
   it("should have correct initial values", async function () {
-    console.log(owner.address, addr1.address, addr2.address);
-
     expect(await erc20Token.name()).to.equal("MyToken");
     expect(await erc20Token.symbol()).to.equal("MTK");
     expect(await erc20Token.owner()).to.equal(owner.address);
     expect(await erc20Token.decimals()).to.equal(18);
-    expect(await erc20Token.totalSupply()).to.equal(ethers.parseEther('1'));
-    expect(await erc20Token.balanceOf(owner.address)).to.equal(ethers.parseEther('1'));
+    expect(await erc20Token.totalSupply()).to.equal(totalSupply);
+    expect(await erc20Token.balanceOf(owner.address)).to.equal(totalSupply);
   });
 
   it("should transfer tokens", async function () {

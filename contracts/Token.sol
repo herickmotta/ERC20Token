@@ -36,11 +36,11 @@ contract ERC20Token is IERC20 {
 
     event OwnershipTransfer(address indexed previousOwner, address indexed newOwner);
 
-    constructor(string memory _name, string memory _symbol) {
+    constructor(string memory _name, string memory _symbol, uint256 _totalSupply) {
         name = _name;
         symbol = _symbol;
         owner = msg.sender;
-        mint(owner, 1 ether);
+        mint(owner, _totalSupply);
     }
 
     function transfer(address to,uint256 value) external returns (bool success) {
